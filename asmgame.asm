@@ -17,8 +17,6 @@
 %macro CLS 0
 	xor di,di
 	mov al, 0x0F
-continue:
-	mov [currentColor], al
 	mov cx, 0xFA00 ;framebuffer size
 	repe stosb 
 %endmacro 
@@ -105,8 +103,9 @@ continue:
 	cmp cx, 0
 	cmovl bx, [one]
 	cmp cx, 200
-	cmovg bx, [neg_one]
-	
+	cmovg cx, [zero]
+
+	mov [ball_y], cx
 	mov [ball_dx], ax
 	mov [ball_dy], bx
 %endmacro
@@ -141,6 +140,7 @@ continue:
 	mov ax, -1
 
 	.branch_continue:
+	
 	cmovz ax, [one]
 	mov [ball_dx], ax
 	mov word [ball_dy], word -1
@@ -302,8 +302,6 @@ jmp main_gameloop
 
 
 .data:
-currentColor dw 0x2
-
 tick dw 0
 player_x dw 100
 player_y dw 180
